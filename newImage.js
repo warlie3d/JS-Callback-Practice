@@ -3,5 +3,6 @@ function newImage(url){
     image.src = url
     document.body.append(image)
     return image
+    //
 }
 
