@@ -14,24 +14,37 @@ function moveWithArrowKeys(left, bottom, callback){
     element.style.left = x + 'px'
     element.style.bottom = y + 'px'
     
-    function moveCharacter(){ 
-        if(direction === 'west'){
-            x-=1
+    function moveCharacter() { 
+        //character limit for edge of screen
+        let width = window.innerWidth - 10;
+        let height = window.innerheight - 10;
+        if (x === 0 && direction === 'west') {
+            return;
+        } else if (x === width && direction === 'east') {
+            return;
+        }else if (y === 0 && direction === 'south') {
+            return;
+        }else if (y === height && direction === 'north') {
+            return;
         }
-        if(direction === 'north'){
-            y+=1
+
+        if(direction === 'west'){
+            x = x - 1;
         }
         if(direction === 'east'){
-            x+=1
+            x = x + 1;
         }
         if(direction === 'south'){
-            y-=1
+            y = y - 1;
         }
-        element.style.left = x + 'px'
-        element.style.bottom = y + 'px'
+        if(direction === 'north'){
+            y = y + 1;
+        }
+        element.style.left = x + 'px';
+        element.style.bottom = y + 'px';
     }
     
-    setInterval(moveCharacter, 1)
+    setInterval(moveCharacter, 1);
     
     document.addEventListener('keydown', function(e){
         if(e.repeat) return;
@@ -48,18 +61,23 @@ function moveWithArrowKeys(left, bottom, callback){
         if(e.key === 'ArrowDown'){
             direction = 'south'
         }
-        callback(direction)
+        //callback 
+        if (callback) {
+            callback(direction)
+        }
     })
     
     document.addEventListener('keyup', function(e){
-        direction = null
-        callback(direction)
+        direction = null;
+            if (callback){
+            callback(direction)
+            }
     })
 }
 
         
     return {
         to: moveToCoordinates,
-        withArrowKeys: moveWithArrowKeys
+        withArrows: moveWithArrowKeys
     }
 }
